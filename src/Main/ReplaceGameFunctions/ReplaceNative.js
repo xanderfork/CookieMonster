@@ -1,19 +1,20 @@
-/* eslint-disable no-unused-vars */
 import jscolor from '@eastdesire/jscolor';
 import { CMOptions } from '../../Config/VariablesAndData';
-import {
-  Beautify as CMBeautify,
-  FormatTime,
-} from '../../Disp/BeautifyAndFormatting/BeautifyFormatting';
+import CMBeautify from '../../Disp/BeautifyAndFormatting/Beautify';
+import FormatTime from '../../Disp/BeautifyAndFormatting/FormatTime';
 import { AddAuraInfo, AddDragonLevelUpTooltip } from '../../Disp/Dragon/Dragon';
 import AddMenu from '../../Disp/MenuSections/AddMenus';
 import UpdateTitle from '../../Disp/TabTitle/TabTitle';
 import ReplaceAscendTooltip from '../../Disp/Tooltips/AscendButton';
 import UpdateTooltipLocation from '../../Disp/Tooltips/PositionLocation';
-import { CMSayTime, Title } from '../../Disp/VariablesAndData';
-import { SimDoSims } from '../../Sim/VariablesAndData';
+import { CMSayTime, Title } from '../../Disp/VariablesAndData'; // eslint-disable-line no-unused-vars
+import { SimDoSims } from '../../Sim/VariablesAndData'; // eslint-disable-line no-unused-vars
 import ReplaceTooltipUpgrade from '../ReplaceGameElements/TooltipUpgrades';
-import { BackupFunctions } from '../VariablesAndData';
+import {
+  BackupFunctions,
+  CenturyDateAtBeginLoop, // eslint-disable-line no-unused-vars
+  CycliusDateAtBeginLoop, // eslint-disable-line no-unused-vars
+} from '../VariablesAndData';
 import FixMouseY from './FixMouse';
 
 /**
@@ -29,11 +30,13 @@ export default function ReplaceNative() {
   Game.CalculateGains = function () {
     BackupFunctions.CalculateGains();
     SimDoSims = 1;
+    CycliusDateAtBeginLoop = Date.now();
+    CenturyDateAtBeginLoop = Date.now();
   };
 
   BackupFunctions.tooltip = {};
   BackupFunctions.tooltip.draw = Game.tooltip.draw;
-  BackupFunctions.tooltip.drawMod = new Function(
+  BackupFunctions.tooltip.drawMod = new Function( // eslint-disable-line no-new-func
     `return ${Game.tooltip.draw.toString().split('this').join('Game.tooltip')}`,
   )();
   Game.tooltip.draw = function (from, text, origin) {
@@ -41,11 +44,8 @@ export default function ReplaceNative() {
   };
 
   BackupFunctions.tooltip.update = Game.tooltip.update;
-  BackupFunctions.tooltip.updateMod = new Function(
-    `return ${Game.tooltip.update
-      .toString()
-      .split('this.')
-      .join('Game.tooltip.')}`,
+  BackupFunctions.tooltip.updateMod = new Function( // eslint-disable-line no-new-func
+    `return ${Game.tooltip.update.toString().split('this.').join('Game.tooltip.')}`,
   )();
   Game.tooltip.update = function () {
     BackupFunctions.tooltip.updateMod();
@@ -66,7 +66,7 @@ export default function ReplaceNative() {
   l('bigCookie').removeEventListener('click', Game.ClickCookie, false);
   l('bigCookie').addEventListener(
     'click',
-    function () {
+    () => {
       FixMouseY(Game.ClickCookie);
     },
     false,
@@ -116,19 +116,16 @@ export default function ReplaceNative() {
 
   BackupFunctions.UpdateMenu = Game.UpdateMenu;
   Game.UpdateMenu = function () {
-    if (
-      typeof jscolor.picker === 'undefined' ||
-      typeof jscolor.picker.owner === 'undefined'
-    ) {
+    if (typeof jscolor.picker === 'undefined' || typeof jscolor.picker.owner === 'undefined') {
       BackupFunctions.UpdateMenu();
       AddMenu();
     }
   };
 
   BackupFunctions.sayTime = Game.sayTime;
+  // eslint-disable-next-line no-unused-vars
   CMSayTime = function (time, detail) {
-    if (Number.isNaN(time) || time <= 0)
-      return BackupFunctions.sayTime(time, detail);
+    if (Number.isNaN(time) || time <= 0) return BackupFunctions.sayTime(time, detail);
     return FormatTime(time / Game.fps, 1);
   };
 
@@ -139,6 +136,7 @@ export default function ReplaceNative() {
     // Update tab title
     let title = 'Cookie Clicker';
     if (Game.season === 'fools') title = 'Cookie Baker';
+    // eslint-disable-next-line no-unused-vars
     Title = `${Game.OnAscend ? 'Ascending! ' : ''}${CMBeautify(Game.cookies)} ${
       Game.cookies === 1 ? 'cookie' : 'cookies'
     } - ${title}`;

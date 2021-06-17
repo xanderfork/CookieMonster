@@ -1,13 +1,13 @@
 import {
-  ColorBackPre,
-  ColorBlue,
-  ColorGray,
-  ColorGreen,
-  ColorOrange,
-  ColorPurple,
-  ColorRed,
-  ColorTextPre,
-  ColorYellow,
+  ColourBackPre,
+  ColourBlue,
+  ColourGray,
+  ColourGreen,
+  ColourOrange,
+  ColourPurple,
+  ColourRed,
+  ColourTextPre,
+  ColourYellow,
 } from '../VariablesAndData';
 
 /**
@@ -28,7 +28,7 @@ function CreateUpgradeBarLegend() {
     const div = document.createElement('div');
     div.style.verticalAlign = 'middle';
     const span = document.createElement('span');
-    span.className = ColorBackPre + color;
+    span.className = ColourBackPre + color;
     span.style.display = 'inline-block';
     span.style.height = '10px';
     span.style.width = '10px';
@@ -38,25 +38,13 @@ function CreateUpgradeBarLegend() {
     return div;
   };
 
-  legend.appendChild(
-    legendLine(ColorBlue, 'Better than the best PP of a building option'),
-  );
-  legend.appendChild(
-    legendLine(ColorGreen, 'Same as the best PP building option'),
-  );
-  legend.appendChild(
-    legendLine(ColorYellow, 'Within the top 10 of PP for buildings'),
-  );
-  legend.appendChild(
-    legendLine(ColorOrange, 'Within the top 20 of PP for buildings'),
-  );
-  legend.appendChild(
-    legendLine(ColorRed, 'Within the top 30 of PP for buildings'),
-  );
-  legend.appendChild(
-    legendLine(ColorPurple, 'Outside of the top 30 of PP for buildings'),
-  );
-  legend.appendChild(legendLine(ColorGray, 'Negative or infinity PP'));
+  legend.appendChild(legendLine(ColourBlue, 'Better than the best PP of a building option'));
+  legend.appendChild(legendLine(ColourGreen, 'Same as the best PP building option'));
+  legend.appendChild(legendLine(ColourYellow, 'Within the top 10 of PP for buildings'));
+  legend.appendChild(legendLine(ColourOrange, 'Within the top 20 of PP for buildings'));
+  legend.appendChild(legendLine(ColourRed, 'Within the top 30 of PP for buildings'));
+  legend.appendChild(legendLine(ColourPurple, 'Outside of the top 30 of PP for buildings'));
+  legend.appendChild(legendLine(ColourGray, 'Negative or infinity PP'));
   return legend;
 }
 
@@ -85,22 +73,19 @@ export default function CreateUpgradeBar() {
   const upgradeNumber = function (id, color) {
     const span = document.createElement('span');
     span.id = id;
-    span.className = ColorTextPre + color;
+    span.className = ColourTextPre + color;
     span.style.width = '14.28571428571429%';
     span.style.display = 'inline-block';
     span.textContent = '0';
     return span;
   };
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarBlue', ColorBlue));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarGreen', ColorGreen));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarYellow', ColorYellow));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarOrange', ColorOrange));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarRed', ColorRed));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarPurple', ColorPurple));
-  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarGray', ColorGray));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarBlue', ColourBlue));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarGreen', ColourGreen));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarYellow', ColourYellow));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarOrange', ColourOrange));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarRed', ColourRed));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarPurple', ColourPurple));
+  UpgradeBar.appendChild(upgradeNumber('CMUpgradeBarGray', ColourGray));
 
-  l('upgrades').parentNode.insertBefore(
-    UpgradeBar,
-    l('upgrades').parentNode.childNodes[3],
-  );
+  l('upgrades').parentNode.insertBefore(UpgradeBar, l('upgrades').parentNode.childNodes[3]);
 }

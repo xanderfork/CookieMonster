@@ -1,13 +1,7 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
 /** Functions related to replacing tooltips */
 
 import { CreateTooltip } from '../../Disp/Tooltips/Tooltip';
-import {
-  LoadMinigames,
-  TooltipBuildBackup,
-  TooltipLumpBackup,
-} from '../VariablesAndData';
+import { LoadMinigames, TooltipBuildBackup, TooltipLumpBackup } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 import ReplaceNativeGrimoire from './NativeGrimoire';
 import ReplaceTooltipGrimoire from './TooltipGrimoire';
 
@@ -21,13 +15,7 @@ function ReplaceTooltipBuild() {
       TooltipBuildBackup[i] = l(`product${me.id}`).onmouseover;
       l(`product${me.id}`).onmouseover = function () {
         Game.tooltip.dynamic = 1;
-        Game.tooltip.draw(
-          this,
-          function () {
-            return CreateTooltip('b', `${i}`);
-          },
-          'store',
-        );
+        Game.tooltip.draw(this, () => CreateTooltip('b', `${i}`), 'store');
         Game.tooltip.wobble();
       };
     }
@@ -42,13 +30,7 @@ function ReplaceTooltipLump() {
     TooltipLumpBackup = l('lumps').onmouseover;
     l('lumps').onmouseover = function () {
       Game.tooltip.dynamic = 1;
-      Game.tooltip.draw(
-        this,
-        function () {
-          return CreateTooltip('s', 'Lump');
-        },
-        'this',
-      );
+      Game.tooltip.draw(this, () => CreateTooltip('s', 'Lump'), 'this');
       Game.tooltip.wobble();
     };
   }
@@ -61,26 +43,15 @@ function ReplaceTooltipGarden() {
   if (Game.Objects.Farm.minigameLoaded) {
     l('gardenTool-1').onmouseover = function () {
       Game.tooltip.dynamic = 1;
-      Game.tooltip.draw(
-        this,
-        function () {
-          return CreateTooltip('ha', 'HarvestAllButton');
-        },
-        'this',
-      );
+      Game.tooltip.draw(this, () => CreateTooltip('ha', 'HarvestAllButton'), 'this');
       Game.tooltip.wobble();
     };
     Array.from(l('gardenPlot').children).forEach((child) => {
       const coords = child.id.slice(-3);
+      // eslint-disable-next-line no-param-reassign
       child.onmouseover = function () {
         Game.tooltip.dynamic = 1;
-        Game.tooltip.draw(
-          this,
-          function () {
-            return CreateTooltip('p', [`${coords[0]}`, `${coords[2]}`]);
-          },
-          'this',
-        );
+        Game.tooltip.draw(this, () => CreateTooltip('p', [`${coords[0]}`, `${coords[2]}`]), 'this');
         Game.tooltip.wobble();
       };
     });
@@ -92,13 +63,7 @@ function ReplaceTooltipPantheon() {
     for (let i = 0; i < 11; i += 1) {
       l(`templeGod${i}`).onmouseover = function () {
         Game.tooltip.dynamic = 1;
-        Game.tooltip.draw(
-          this,
-          function () {
-            return CreateTooltip('pag', i);
-          },
-          'this',
-        );
+        Game.tooltip.draw(this, () => CreateTooltip('pag', i), 'this');
         Game.tooltip.wobble();
       };
     }
@@ -107,12 +72,7 @@ function ReplaceTooltipPantheon() {
         Game.tooltip.dynamic = 1;
         Game.tooltip.draw(
           this,
-          function () {
-            return CreateTooltip('pas', [
-              i,
-              Game.Objects.Temple.minigame.slot[i],
-            ]);
-          },
+          () => CreateTooltip('pas', [i, Game.Objects.Temple.minigame.slot[i]]),
           'this',
         );
         Game.tooltip.wobble();

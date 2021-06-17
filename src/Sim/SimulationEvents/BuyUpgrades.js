@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import CalculateGains from '../Calculations/CalculateGains';
 import CheckOtherAchiev from '../Calculations/CheckOtherAchiev';
 import SimAuraMult from '../ReplacedGameFunctions/SimAuraMult';
@@ -13,7 +12,7 @@ import {
   SimObjects,
   SimPledges,
   SimUpgrades,
-  SimUpgradesOwned,
+  SimUpgradesOwned, // eslint-disable-line no-unused-vars
 } from '../VariablesAndData';
 
 /**
@@ -64,13 +63,7 @@ function MouseCps() {
   if (SimHas('Dragon claw')) mult *= 1.03;
 
   if (SimHas('Aura gloves')) {
-    mult *=
-      1 +
-      0.05 *
-        Math.min(
-          Game.Objects.Cursor.level,
-          SimHas('Luminous gloves') ? 20 : 10,
-        );
+    mult *= 1 + 0.05 * Math.min(Game.Objects.Cursor.level, SimHas('Luminous gloves') ? 20 : 10);
   }
 
   mult *= SimEff('click');
@@ -84,8 +77,7 @@ function MouseCps() {
   }
 
   Object.keys(Game.buffs).forEach((i) => {
-    if (typeof Game.buffs[i].multClick !== 'undefined')
-      mult *= Game.buffs[i].multClick;
+    if (typeof Game.buffs[i].multClick !== 'undefined') mult *= Game.buffs[i].multClick;
   });
 
   // if (CM.Sim.auraMult('Dragon Cursor')) mult*=1.05;
@@ -130,9 +122,7 @@ export default function BuyUpgradesBonusIncome(upgrade) {
     } else {
       SimUpgrades[upgrade].bought = (SimUpgrades[upgrade].bought + 1) % 2;
     }
-    const me = SimUpgrades[upgrade];
-    if (Game.CountsAsUpgradeOwned(Game.Upgrades[upgrade].pool))
-      SimUpgradesOwned += 1;
+    if (Game.CountsAsUpgradeOwned(Game.Upgrades[upgrade].pool)) SimUpgradesOwned += 1;
 
     if (upgrade === 'Elder Pledge') {
       SimPledges += 1;

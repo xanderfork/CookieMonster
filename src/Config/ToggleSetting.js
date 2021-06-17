@@ -17,16 +17,13 @@ export function ToggleConfig(config) {
 
   if (CMOptions[config] === ConfigData[config].label.length) {
     CMOptions[config] = 0;
-    if (ConfigData[config].toggle)
-      l(ConfigPrefix + config).className = 'option off';
+    if (ConfigData[config].toggle) l(ConfigPrefix + config).className = 'option off';
   } else l(ConfigPrefix + config).className = 'option';
 
   if (typeof ConfigData[config].func !== 'undefined') {
     ConfigData[config].func();
   }
 
-  l(ConfigPrefix + config).innerHTML =
-    ConfigData[config].label[CMOptions[config]];
   SaveConfig();
 }
 

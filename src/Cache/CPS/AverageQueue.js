@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { ClickTimes, CookieTimes } from '../../Disp/VariablesAndData';
 import {
-  ChoEggDiff,
-  ClicksDiff,
-  CookiesDiff,
-  WrinkDiff,
-  WrinkFattestDiff,
+  ChoEggDiff, // eslint-disable-line no-unused-vars
+  ClicksDiff, // eslint-disable-line no-unused-vars
+  CookiesDiff, // eslint-disable-line no-unused-vars
+  WrinkDiff, // eslint-disable-line no-unused-vars
+  WrinkFattestDiff, // eslint-disable-line no-unused-vars
 } from '../VariablesAndData';
 
 /**
@@ -38,17 +37,21 @@ export class CMAvgQueue {
     if (time > this.maxLength) time = this.maxLength;
     if (time > this.queue.length) time = this.queue.length;
     let ret = 0;
-    for (
-      let i = this.queue.length - 1;
-      i >= 0 && i > this.queue.length - 1 - time;
-      i--
-    ) {
+    for (let i = this.queue.length - 1; i >= 0 && i > this.queue.length - 1 - time; i--) {
       ret += this.queue[i];
     }
     if (ret === 0) {
       return 0;
     }
     return ret / time;
+  }
+
+  calcSum(timePeriod) {
+    let time = timePeriod;
+    if (time > this.maxLength) time = this.maxLength;
+    if (time > this.queue.length) time = this.queue.length;
+    if (time === 0) return 0;
+    return this.queue.slice(-time).reduce((a, b) => a + b, 0);
   }
 }
 

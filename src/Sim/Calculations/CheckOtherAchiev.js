@@ -1,4 +1,4 @@
-import { ChristCookies, HalloCookies } from '../../Data/Gamedata';
+import { ChristCookies, HalloCookies } from '../../Data/Gamedata.ts';
 import SimHas from '../ReplacedGameFunctions/SimHas';
 import SimHasAchiev from '../ReplacedGameFunctions/SimHasAchiev';
 import SimWin from '../SimulationData/SimWin';
@@ -32,11 +32,7 @@ export default function CheckOtherAchiev() {
         mathematician = 0;
     }
     if (!SimHasAchiev('Base 10')) {
-      if (
-        SimObjects[i].amount <
-        (Game.ObjectsById.length - Game.Objects[i].id) * 10
-      )
-        base10 = 0;
+      if (SimObjects[i].amount < (Game.ObjectsById.length - Game.Objects[i].id) * 10) base10 = 0;
     }
   });
   if (minAmount >= 1) SimWin('One with everything');
@@ -69,11 +65,9 @@ export default function CheckOtherAchiev() {
   if (SimUpgradesOwned >= 400) SimWin("When there's nothing left to add");
 
   if (buildingsOwned >= 4000 && SimUpgradesOwned >= 300) SimWin('Polymath');
-  if (buildingsOwned >= 8000 && SimUpgradesOwned >= 400)
-    SimWin('Renaissance baker');
+  if (buildingsOwned >= 8000 && SimUpgradesOwned >= 400) SimWin('Renaissance baker');
 
-  if (SimObjects.Cursor.amount + SimObjects.Grandma.amount >= 777)
-    SimWin('The elder scrolls');
+  if (SimObjects.Cursor.amount + SimObjects.Grandma.amount >= 777) SimWin('The elder scrolls');
 
   let hasAllHalloCook = true;
   Object.keys(HalloCookies).forEach((i) => {

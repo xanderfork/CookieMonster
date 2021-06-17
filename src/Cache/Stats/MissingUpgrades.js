@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { crateMissing } from '../../Disp/MenuSections/CreateMissingUpgrades';
+import { crateMissing } from '../../Disp/MenuSections/Statistics/CreateMissingUpgrades';
 import {
-  CacheMissingUpgrades,
-  CacheMissingUpgradesCookies,
-  CacheMissingUpgradesPrestige,
+  CacheMissingUpgrades, // eslint-disable-line no-unused-vars
+  CacheMissingUpgradesCookies, // eslint-disable-line no-unused-vars
+  CacheMissingUpgradesPrestige, // eslint-disable-line no-unused-vars
 } from '../VariablesAndData';
 
 /**
@@ -36,14 +35,12 @@ export default function CacheAllMissingUpgrades() {
       let str = '';
 
       str += crateMissing(me);
+      /* eslint-disable no-unused-vars */
       if (me.pool === 'prestige') CacheMissingUpgradesPrestige += str;
       else if (me.pool === 'cookie') CacheMissingUpgradesCookies += str;
-      else if (
-        me.pool !== 'toggle' &&
-        me.pool !== 'unused' &&
-        me.pool !== 'debug'
-      )
+      else if (me.pool !== 'toggle' && me.pool !== 'unused' && me.pool !== 'debug')
         CacheMissingUpgrades += str;
+      /* eslint-enable no-unused-vars */
     }
   });
 }

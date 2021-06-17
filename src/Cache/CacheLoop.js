@@ -1,11 +1,11 @@
-/* eslint-disable no-unused-vars */
-import { FormatTime } from '../Disp/BeautifyAndFormatting/BeautifyFormatting';
+import FormatTime from '../Disp/BeautifyAndFormatting/FormatTime';
 import GetCPS from '../Disp/HelperFunctions/GetCPS';
 import CacheAvgCPS from './CPS/CPS';
 import CacheCurrWrinklerCPS from './CPS/CurrWrinklerCPS';
 import CachePP from './PP/PP';
 import CacheHeavenlyChipsPS from './Stats/HeavenlyChips';
-import { CacheTimeTillNextPrestige } from './VariablesAndData';
+import AllAmountTillNextAchievement from './TillNextAchievement/AllAmountTillNextAchievement';
+import { CacheTimeTillNextPrestige } from './VariablesAndData'; // eslint-disable-line no-unused-vars
 import CacheWrinklers from './Wrinklers/Wrinklers';
 
 /**
@@ -17,14 +17,14 @@ export default function LoopCache() {
   CacheWrinklers();
 
   CachePP();
+  AllAmountTillNextAchievement(false);
   CacheCurrWrinklerCPS();
   CacheAvgCPS();
   CacheHeavenlyChipsPS();
 
   const cookiesToNext =
     Game.HowManyCookiesReset(
-      Math.floor(Game.HowMuchPrestige(Game.cookiesReset + Game.cookiesEarned)) +
-        1,
+      Math.floor(Game.HowMuchPrestige(Game.cookiesReset + Game.cookiesEarned)) + 1,
     ) -
     (Game.cookiesEarned + Game.cookiesReset);
   CacheTimeTillNextPrestige = FormatTime(cookiesToNext / GetCPS());

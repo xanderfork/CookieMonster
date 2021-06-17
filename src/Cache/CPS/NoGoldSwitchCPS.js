@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import CalcNoGoldSwitchCPS from '../../Sim/Calculations/NoGoldenSwitchCalc';
-import { CacheNoGoldSwitchCookiesPS } from '../VariablesAndData';
+import { CacheNoGoldSwitchCookiesPS } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This function calculates CPS without the Golden Switch as it might be needed in other functions

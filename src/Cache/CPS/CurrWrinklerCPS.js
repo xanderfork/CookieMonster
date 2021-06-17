@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { SimObjects } from '../../Sim/VariablesAndData';
-import {
-  CacheCurrWrinklerCount,
-  CacheCurrWrinklerCPSMult,
-} from '../VariablesAndData';
+import { CacheCurrWrinklerCount, CacheCurrWrinklerCPSMult } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This functions caches the current Wrinkler CPS multiplier

@@ -4,10 +4,8 @@ import CacheDragonCost from '../../Cache/Dragon/Dragon';
 import { CacheCostDragonUpgrade } from '../../Cache/VariablesAndData';
 import { CMOptions } from '../../Config/VariablesAndData';
 import CalculateChangeAura from '../../Sim/SimulationEvents/AuraChange';
-import {
-  Beautify,
-  FormatTime,
-} from '../BeautifyAndFormatting/BeautifyFormatting';
+import Beautify from '../BeautifyAndFormatting/Beautify';
+import FormatTime from '../BeautifyAndFormatting/FormatTime';
 
 /**
  * This functions adds the two extra lines about CPS and time to recover to the aura picker infoscreen
@@ -16,15 +14,14 @@ import {
 export function AddAuraInfo(aura) {
   if (CMOptions.DragonAuraInfo === 1) {
     const [bonusCPS, priceOfChange] = CalculateChangeAura(aura);
-    const timeToRecover = FormatTime(
-      priceOfChange / (bonusCPS + Game.cookiesPs),
-    );
-    const bonusCPSPercentage = Beautify(bonusCPS / Game.cookiesPs);
+    const timeToRecover = FormatTime(priceOfChange / (bonusCPS + Game.cookiesPs));
+    let bonusCPSPercentage;
+    if (Game.cookiesPs === 0) bonusCPSPercentage = Beautify(Infinity);
+    else bonusCPSPercentage = Beautify((bonusCPS / Game.cookiesPs) * 100);
 
     l('dragonAuraInfo').style.minHeight = '60px';
     l('dragonAuraInfo').style.margin = '8px';
-    l('dragonAuraInfo').appendChild(document.createElement('div')).className =
-      'line';
+    l('dragonAuraInfo').appendChild(document.createElement('div')).className = 'line';
     const div = document.createElement('div');
     div.style.minWidth = '200px';
     div.style.textAlign = 'center';

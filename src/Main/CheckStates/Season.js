@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { CacheSeasonPopShimmer } from '../../Cache/VariablesAndData';
+import { CacheSeasonPopShimmer } from '../../Cache/VariablesAndData'; // eslint-disable-line no-unused-vars
 import { CMOptions } from '../../Config/VariablesAndData';
 import Flash from '../../Disp/Notifications/Flash';
 import CreateNotification from '../../Disp/Notifications/Notification';
@@ -18,7 +17,7 @@ export default function CheckSeasonPopup() {
         CacheSeasonPopShimmer = Game.shimmers[i];
       }
     });
-    Flash(3, 'SeaFlash');
+    Flash(3, 'SeaFlash', false);
     PlaySound(CMOptions.SeaSoundURL, 'SeaSound', 'SeaVolume', false);
     CreateNotification(
       'SeaNotification',

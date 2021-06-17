@@ -3,11 +3,11 @@
 import { UpdateBotTimerBarPosition } from '../../Config/SpecificToggles';
 import { CMOptions } from '../../Config/VariablesAndData';
 import {
-  BuffColors,
-  ColorBackPre,
-  ColorGray,
-  ColorOrange,
-  ColorPurple,
+  BuffColours,
+  ColourBackPre,
+  ColourGray,
+  ColourOrange,
+  ColourPurple,
   LastNumberOfTimers,
 } from '../VariablesAndData';
 import { CreateTimer } from './CreateDOMElements';
@@ -25,17 +25,23 @@ export function CreateTimerBar() {
   TimerBar.style.fontWeight = 'bold';
   TimerBar.style.backgroundColor = 'black';
 
+  // Create standard Autosave bar
+  const CMTimerBarAutosave = CreateTimer('CMTimerBarAutosave', 'Autosave', [
+    { id: 'CMTimerBarAutosaveBar', color: ColourPurple },
+  ]);
+  TimerBar.appendChild(CMTimerBarAutosave);
+
   // Create standard Golden Cookie bar
   const CMTimerBarGC = CreateTimer('CMTimerBarGC', 'Next Cookie', [
-    { id: 'CMTimerBarGCMinBar', color: ColorGray },
-    { id: 'CMTimerBarGCBar', color: ColorPurple },
+    { id: 'CMTimerBarGCMinBar', color: ColourGray },
+    { id: 'CMTimerBarGCBar', color: ColourPurple },
   ]);
   TimerBar.appendChild(CMTimerBarGC);
 
   // Create standard Reindeer bar
   const CMTimerBarRen = CreateTimer('CMTimerBarRen', 'Next Reindeer', [
-    { id: 'CMTimerBarRenMinBar', color: ColorGray },
-    { id: 'CMTimerBarRenBar', color: ColorOrange },
+    { id: 'CMTimerBarRenMinBar', color: ColourGray },
+    { id: 'CMTimerBarRenBar', color: ColourOrange },
   ]);
   TimerBar.appendChild(CMTimerBarRen);
   const TimerBarBuffTimers = document.createElement('div');
@@ -56,29 +62,36 @@ export function UpdateTimerBar() {
     const maxWidthOneBar = l('CMTimerBar').offsetWidth - 133;
     let numberOfTimers = 0;
 
+    if (CMOptions.AutosaveTimerBar && Game.prefs.autosave) {
+      const timeTillNextAutosave =
+        (Game.fps * 60 - (Game.OnAscend ? 0 : Game.T % (Game.fps * 60))) / Game.fps;
+      l('CMTimerBarAutosave').style.display = '';
+      l('CMTimerBarAutosaveBar').style.width = `${Math.round(
+        (timeTillNextAutosave *
+          (maxWidthOneBar - Math.ceil(timeTillNextAutosave).toString().length * 8)) /
+          60,
+      )}px`;
+      if (CMOptions.TimerBarOverlay >= 1) {
+        l('CMTimerBarAutosaveBar').textContent = Math.ceil(timeTillNextAutosave);
+      } else l('CMTimerBarAutosaveBar').textContent = '';
+      l('CMTimerBarAutosaveTime').textContent = Math.ceil(timeTillNextAutosave);
+      numberOfTimers += 1;
+    } else l('CMTimerBarAutosave').style.display = 'none';
+
     // Regulates visibility of Golden Cookie timer
-    if (
-      Game.shimmerTypes.golden.spawned === 0 &&
-      !Game.Has('Golden switch [off]')
-    ) {
+    if (Game.shimmerTypes.golden.spawned === 0 && !Game.Has('Golden switch [off]')) {
       l('CMTimerBarGC').style.display = '';
       l('CMTimerBarGCMinBar').style.width = `${Math.round(
-        (Math.max(
-          0,
-          Game.shimmerTypes.golden.minTime - Game.shimmerTypes.golden.time,
-        ) *
+        (Math.max(0, Game.shimmerTypes.golden.minTime - Game.shimmerTypes.golden.time) *
           maxWidthTwoBar) /
           Game.shimmerTypes.golden.maxTime,
       )}px`;
       if (CMOptions.TimerBarOverlay >= 1)
         l('CMTimerBarGCMinBar').textContent = Math.ceil(
-          (Game.shimmerTypes.golden.minTime - Game.shimmerTypes.golden.time) /
-            Game.fps,
+          (Game.shimmerTypes.golden.minTime - Game.shimmerTypes.golden.time) / Game.fps,
         );
       else l('CMTimerBarGCMinBar').textContent = '';
-      if (
-        Game.shimmerTypes.golden.minTime === Game.shimmerTypes.golden.maxTime
-      ) {
+      if (Game.shimmerTypes.golden.minTime === Game.shimmerTypes.golden.maxTime) {
         l('CMTimerBarGCMinBar').style.borderTopRightRadius = '10px';
         l('CMTimerBarGCMinBar').style.borderBottomRightRadius = '10px';
       } else {
@@ -102,37 +115,27 @@ export function UpdateTimerBar() {
         );
       else l('CMTimerBarGCBar').textContent = '';
       l('CMTimerBarGCTime').textContent = Math.ceil(
-        (Game.shimmerTypes.golden.maxTime - Game.shimmerTypes.golden.time) /
-          Game.fps,
+        (Game.shimmerTypes.golden.maxTime - Game.shimmerTypes.golden.time) / Game.fps,
       );
       numberOfTimers += 1;
     } else l('CMTimerBarGC').style.display = 'none';
 
     // Regulates visibility of Reindeer timer
-    if (
-      Game.season === 'christmas' &&
-      Game.shimmerTypes.reindeer.spawned === 0
-    ) {
+    if (Game.season === 'christmas' && Game.shimmerTypes.reindeer.spawned === 0) {
       l('CMTimerBarRen').style.display = '';
       l('CMTimerBarRenMinBar').style.width = `${Math.round(
-        (Math.max(
-          0,
-          Game.shimmerTypes.reindeer.minTime - Game.shimmerTypes.reindeer.time,
-        ) *
+        (Math.max(0, Game.shimmerTypes.reindeer.minTime - Game.shimmerTypes.reindeer.time) *
           maxWidthTwoBar) /
           Game.shimmerTypes.reindeer.maxTime,
       )}px`;
       if (CMOptions.TimerBarOverlay >= 1)
         l('CMTimerBarRenMinBar').textContent = Math.ceil(
-          (Game.shimmerTypes.reindeer.minTime -
-            Game.shimmerTypes.reindeer.time) /
-            Game.fps,
+          (Game.shimmerTypes.reindeer.minTime - Game.shimmerTypes.reindeer.time) / Game.fps,
         );
       else l('CMTimerBarRenMinBar').textContent = '';
       l('CMTimerBarRenBar').style.width = `${Math.round(
         (Math.min(
-          Game.shimmerTypes.reindeer.maxTime -
-            Game.shimmerTypes.reindeer.minTime,
+          Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.minTime,
           Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.time,
         ) *
           maxWidthTwoBar) /
@@ -141,16 +144,13 @@ export function UpdateTimerBar() {
       if (CMOptions.TimerBarOverlay >= 1)
         l('CMTimerBarRenBar').textContent = Math.ceil(
           Math.min(
-            Game.shimmerTypes.reindeer.maxTime -
-              Game.shimmerTypes.reindeer.minTime,
-            Game.shimmerTypes.reindeer.maxTime -
-              Game.shimmerTypes.reindeer.time,
+            Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.minTime,
+            Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.time,
           ) / Game.fps,
         );
       else l('CMTimerBarRenBar').textContent = '';
       l('CMTimerBarRenTime').textContent = Math.ceil(
-        (Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.time) /
-          Game.fps,
+        (Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.time) / Game.fps,
       );
       numberOfTimers += 1;
     } else {
@@ -166,12 +166,12 @@ export function UpdateTimerBar() {
           { id: `${Game.buffs[i].name}Bar` },
         ]);
         timer.style.display = '';
-        let classColor = '';
+        let classColour = '';
         // Gives specific timers specific colors
-        if (typeof BuffColors[Game.buffs[i].name] !== 'undefined') {
-          classColor = BuffColors[Game.buffs[i].name];
-        } else classColor = ColorPurple;
-        timer.lastChild.children[1].className = ColorBackPre + classColor;
+        if (typeof BuffColours[Game.buffs[i].name] !== 'undefined') {
+          classColour = BuffColours[Game.buffs[i].name];
+        } else classColour = ColourPurple;
+        timer.lastChild.children[1].className = ColourBackPre + classColour;
         timer.lastChild.children[1].style.color = 'black';
         if (CMOptions.TimerBarOverlay === 2)
           timer.lastChild.children[1].textContent = `${Math.round(
@@ -180,13 +180,10 @@ export function UpdateTimerBar() {
         else timer.lastChild.children[1].textContent = '';
         timer.lastChild.children[1].style.width = `${Math.round(
           (Game.buffs[i].time *
-            (maxWidthOneBar -
-              Math.ceil(Game.buffs[i].time / Game.fps).toString().length * 8)) /
+            (maxWidthOneBar - Math.ceil(Game.buffs[i].time / Game.fps).toString().length * 8)) /
             Game.buffs[i].maxTime,
         )}px`;
-        timer.lastChild.children[2].textContent = Math.ceil(
-          Game.buffs[i].time / Game.fps,
-        );
+        timer.lastChild.children[2].textContent = Math.ceil(Game.buffs[i].time / Game.fps);
         numberOfTimers += 1;
         BuffTimerBars[Game.buffs[i].name] = timer;
       }

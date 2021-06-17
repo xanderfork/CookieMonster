@@ -1,21 +1,20 @@
-/* eslint-disable no-unused-vars */
 /** Functions related to Caching stats */
 
 import SimHas from '../../Sim/ReplacedGameFunctions/SimHas';
 import GetCPSBuffMult from '../CPS/GetCPSBuffMult';
 import {
   CacheConjure,
-  CacheConjureReward,
+  CacheConjureReward, // eslint-disable-line no-unused-vars
   CacheDragonsFortuneMultAdjustment,
   CacheEdifice,
-  CacheEdificeBuilding,
+  CacheEdificeBuilding, // eslint-disable-line no-unused-vars
   CacheGoldenCookiesMult,
   CacheLucky,
   CacheLuckyFrenzy,
-  CacheLuckyReward,
-  CacheLuckyRewardFrenzy,
-  CacheLuckyWrathReward,
-  CacheLuckyWrathRewardFrenzy,
+  CacheLuckyReward, // eslint-disable-line no-unused-vars
+  CacheLuckyRewardFrenzy, // eslint-disable-line no-unused-vars
+  CacheLuckyWrathReward, // eslint-disable-line no-unused-vars
+  CacheLuckyWrathRewardFrenzy, // eslint-disable-line no-unused-vars
   CacheNoGoldSwitchCookiesPS,
   CacheWrathCookiesMult,
 } from '../VariablesAndData';
@@ -32,10 +31,8 @@ export function CacheStatsCookies() {
   CacheLuckyReward = CacheGoldenCookiesMult * (CacheLucky * 0.15) + 13;
   CacheLuckyWrathReward = CacheWrathCookiesMult * (CacheLucky * 0.15) + 13;
   CacheLuckyFrenzy = CacheLucky * 7;
-  CacheLuckyRewardFrenzy =
-    CacheGoldenCookiesMult * (CacheLuckyFrenzy * 0.15) + 13;
-  CacheLuckyWrathRewardFrenzy =
-    CacheWrathCookiesMult * (CacheLuckyFrenzy * 0.15) + 13;
+  CacheLuckyRewardFrenzy = CacheGoldenCookiesMult * (CacheLuckyFrenzy * 0.15) + 13;
+  CacheLuckyWrathRewardFrenzy = CacheWrathCookiesMult * (CacheLuckyFrenzy * 0.15) + 13;
   CacheConjure = CacheLucky * 2;
   CacheConjureReward = CacheConjure * 0.15;
 
@@ -85,7 +82,6 @@ export function CacheGoldenAndWrathCookiesMults() {
   // Otherwise, the aura effect will be factored in the base CPS making the multiplier not requiring adjustment.
   CacheDragonsFortuneMultAdjustment = 1;
   if (Game.shimmerTypes.golden.n === 0) {
-    CacheDragonsFortuneMultAdjustment *=
-      1 + Game.auraMult("Dragon's Fortune") * 1.23;
+    CacheDragonsFortuneMultAdjustment *= 1 + Game.auraMult("Dragon's Fortune") * 1.23;
   }
 }

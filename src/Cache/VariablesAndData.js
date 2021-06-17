@@ -28,6 +28,7 @@ export let CacheLastChoEgg = 0;
 export let CacheObjects1 = {};
 export let CacheObjects10 = {};
 export let CacheObjects100 = {};
+export let CacheObjectsNextAchievement = {};
 
 export let CacheWrinklersTotal = 0;
 export let CacheWrinklersNormal = 0;
@@ -39,6 +40,7 @@ export let CacheCurrWrinklerCount = 0;
 export let CacheUpgrades = {};
 
 export let CacheAverageClicks = {};
+export let CacheAverageCookiesFromClicks;
 
 export let CacheMissingUpgrades = {};
 export let CacheMissingUpgradesPrestige = {};
@@ -67,6 +69,8 @@ export let CacheTimeTillNextPrestige = 0;
 
 /** Stores lowest PP value */
 export let CacheMinPP = 0;
+/** Stores lowest PP value category */
+export let CacheMinPPBulk = 0;
 /** Stores all PP values of all buildings for all buy settings (1, 10, 100) */
 export let CachePPArray = [];
 

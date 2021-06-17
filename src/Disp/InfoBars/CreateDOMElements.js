@@ -1,6 +1,6 @@
 /** Functions to create various DOM elements used by the Bars */
 
-import { ColorBackPre, ColorBlue, ColorTextPre } from '../VariablesAndData';
+import { ColourBackPre, ColourBlue, ColourTextPre } from '../VariablesAndData';
 
 /**
  * This function creates an indivudual timer for the timer bar
@@ -47,7 +47,7 @@ export function CreateTimer(id, name, bars) {
       colorBar.style.borderBottomRightRadius = '10px';
     }
     if (typeof bars[i].color !== 'undefined') {
-      colorBar.className = ColorBackPre + bars[i].color;
+      colorBar.className = ColourBackPre + bars[i].color;
     }
     div.appendChild(colorBar);
   }
@@ -77,13 +77,11 @@ export function CreateBotBarBuildingColumn(buildingName) {
     const i = buildingName;
     const header = type.appendChild(document.createElement('td'));
     header.appendChild(
-      document.createTextNode(
-        `${i.indexOf(' ') !== -1 ? i.substring(0, i.indexOf(' ')) : i} (`,
-      ),
+      document.createTextNode(`${i.indexOf(' ') !== -1 ? i.substring(0, i.indexOf(' ')) : i} (`),
     );
 
     const span = header.appendChild(document.createElement('span'));
-    span.className = ColorTextPre + ColorBlue;
+    span.className = ColourTextPre + ColourBlue;
 
     header.appendChild(document.createTextNode(')'));
     type.lastChild.style.paddingLeft = '8px';

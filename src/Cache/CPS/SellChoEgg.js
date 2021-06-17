@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import SellBuildingsForChoEgg from '../../Sim/SimulationEvents/SellBuildingForChoEgg';
-import { CacheSellForChoEgg } from '../VariablesAndData';
+import { CacheSellForChoEgg } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This functions caches the reward for selling the Chocolate egg

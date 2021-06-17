@@ -1,8 +1,4 @@
-/* eslint-disable no-unused-vars */
-import {
-  TooltipWrinklerArea,
-  TooltipWrinklerBeingShown,
-} from '../../Disp/VariablesAndData';
+import { TooltipWrinklerArea, TooltipWrinklerBeingShown } from '../../Disp/VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This function creates .onmouseover/out events that determine if the mouse is hovering-over a Wrinkler

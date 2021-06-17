@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { CacheSeaSpec } from '../VariablesAndData';
+import { CacheSeaSpec } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This functions caches the reward of popping a reindeer

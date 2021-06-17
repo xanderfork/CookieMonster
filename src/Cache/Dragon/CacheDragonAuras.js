@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { CacheDragonAura, CacheDragonAura2 } from '../VariablesAndData';
+import { CacheDragonAura, CacheDragonAura2 } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This functions caches the currently selected Dragon Auras

@@ -1,13 +1,12 @@
-/* eslint-disable no-param-reassign */
 import { CMOptions } from '../../Config/VariablesAndData';
 import {
-  ColorTextPre,
-  ColorBorderPre,
-  ColorGray,
-  ColorBlue,
-  ColorRed,
-  ColorYellow,
-  ColorPurple,
+  ColourTextPre,
+  ColourBorderPre,
+  ColourGray,
+  ColourBlue,
+  ColourRed,
+  ColourYellow,
+  ColourPurple,
   TooltipType,
 } from '../VariablesAndData';
 
@@ -24,7 +23,7 @@ export function TooltipCreateTooltipBox() {
   tooltipBox.style.padding = '4px';
   tooltipBox.style.margin = '0px -4px';
   tooltipBox.id = 'CMTooltipBorder';
-  tooltipBox.className = ColorTextPre + ColorGray;
+  tooltipBox.className = ColourTextPre + ColourGray;
   return tooltipBox;
 }
 
@@ -37,7 +36,7 @@ export function TooltipCreateHeader(text) {
   const div = document.createElement('div');
   div.style.fontWeight = 'bold';
   div.id = `${text}Title`;
-  div.className = ColorTextPre + ColorBlue;
+  div.className = ColourTextPre + ColourBlue;
   div.textContent = text;
   return div;
 }
@@ -55,24 +54,18 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.style.bottom = 'auto';
   TooltipWarn.id = 'CMDispTooltipWarningParent';
 
-  const create = function (
-    boxId,
-    color,
-    labelTextFront,
-    labelTextBack,
-    deficitId,
-  ) {
+  const create = function (boxId, color, labelTextFront, labelTextBack, deficitId) {
     const box = document.createElement('div');
     box.id = boxId;
     box.style.display = 'none';
     box.style.transition = 'opacity 0.1s ease-out';
-    box.className = ColorBorderPre + color;
+    box.className = ColourBorderPre + color;
     box.style.padding = '2px';
     box.style.background = '#000 url(img/darkNoise.png)';
     const labelDiv = document.createElement('div');
     box.appendChild(labelDiv);
     const labelSpan = document.createElement('span');
-    labelSpan.className = ColorTextPre + color;
+    labelSpan.className = ColourTextPre + color;
     labelSpan.style.fontWeight = 'bold';
     labelSpan.textContent = labelTextFront;
     labelDiv.appendChild(labelSpan);
@@ -89,7 +82,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnLucky',
-      ColorRed,
+      ColourRed,
       'Warning: ',
       'Purchase of this item will put you under the number of Cookies required for "Lucky!"',
       'CMDispTooltipWarnLuckyText',
@@ -99,7 +92,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnLuckyFrenzy',
-      ColorYellow,
+      ColourYellow,
       'Warning: ',
       'Purchase of this item will put you under the number of Cookies required for "Lucky!" (Frenzy)',
       'CMDispTooltipWarnLuckyFrenzyText',
@@ -109,7 +102,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnConjure',
-      ColorPurple,
+      ColourPurple,
       'Warning: ',
       'Purchase of this item will put you under the number of Cookies required for "Conjure Baked Goods"',
       'CMDispTooltipWarnConjureText',
@@ -119,7 +112,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnConjureFrenzy',
-      ColorPurple,
+      ColourPurple,
       'Warning: ',
       'Purchase of this item will put you under the number of Cookies required for "Conjure Baked Goods" (Frenzy)',
       'CMDispTooltipWarnConjureFrenzyText',
@@ -129,7 +122,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnEdifice',
-      ColorPurple,
+      ColourPurple,
       'Warning: ',
       'Purchase of this item will put you under the number of Cookies needed for "Spontaneous Edifice" to possibly give you your most expensive building"',
       'CMDispTooltipWarnEdificeText',
@@ -139,7 +132,7 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.appendChild(
     create(
       'CMDispTooltipWarnUser',
-      ColorRed,
+      ColourRed,
       'Warning: ',
       `Purchase of this item will put you under the number of Cookies equal to ${CMOptions.ToolWarnUser} seconds of CPS`,
       'CMDispTooltipWarnUserText',
@@ -163,7 +156,7 @@ export function TooltipCreateCalculationSection(tooltip) {
   tooltip.appendChild(income);
 
   tooltip.appendChild(TooltipCreateHeader('Bonus Cookies per Click'));
-  tooltip.lastChild.style.display = 'none';
+  tooltip.lastChild.style.display = 'none'; // eslint-disable-line no-param-reassign
   const click = document.createElement('div');
   click.style.marginBottom = '4px';
   click.style.color = 'white';
@@ -183,12 +176,17 @@ export function TooltipCreateCalculationSection(tooltip) {
   tooltip.appendChild(time);
 
   if (TooltipType === 'b') {
-    tooltip.appendChild(
-      TooltipCreateHeader('Production left till next achievement'),
-    );
-    tooltip.lastChild.id = 'CMTooltipProductionHeader'; // Assign a id in order to hid when no achiev's are left
+    tooltip.appendChild(TooltipCreateHeader('Production left till next achievement'));
+    tooltip.lastChild.id = 'CMTooltipProductionLeftHeader'; // eslint-disable-line no-param-reassign
     const production = document.createElement('div');
-    production.id = 'CMTooltipProduction';
+    production.id = 'CMTooltipProductionLeft';
+    tooltip.appendChild(production);
+  }
+  if (TooltipType === 'b') {
+    tooltip.appendChild(TooltipCreateHeader('Buildings (price / PP) left till next achievement'));
+    tooltip.lastChild.id = 'CMTooltipNextAchievementHeader'; // eslint-disable-line no-param-reassign
+    const production = document.createElement('div');
+    production.id = 'CMTooltipNextAchievement';
     tooltip.appendChild(production);
   }
 }

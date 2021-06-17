@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { SimAchievements, SimAchievementsOwned } from '../VariablesAndData';
+import { SimAchievements, SimAchievementsOwned } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
  * This function "wins" an achievement in the current sim data

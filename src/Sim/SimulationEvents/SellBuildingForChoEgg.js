@@ -1,11 +1,5 @@
-/* eslint-disable no-unused-vars */
 import CopyData from '../SimulationData/CopyData';
-import {
-  SimBuildingsOwned,
-  SimDragonAura,
-  SimDragonAura2,
-  SimObjects,
-} from '../VariablesAndData';
+import { SimBuildingsOwned, SimDragonAura, SimDragonAura2, SimObjects } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 import BuildingSell from './SellBuilding';
 
 /**

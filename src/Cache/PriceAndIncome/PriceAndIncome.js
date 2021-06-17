@@ -1,20 +1,18 @@
-/* eslint-disable no-unused-vars */
 /** Section: Functions related to caching income */
 
 import { CMOptions } from '../../Config/VariablesAndData';
-import GetCPS from '../../Disp/HelperFunctions/GetCPS';
 import BuildingGetPrice from '../../Sim/SimulationEvents/BuyBuilding';
 import BuyBuildingsBonusIncome from '../../Sim/SimulationEvents/BuyBuildingBonusIncome';
 import BuyUpgradesBonusIncome from '../../Sim/SimulationEvents/BuyUpgrades';
 import {
-  CacheAverageCPS,
   CacheAverageGainBank,
   CacheAverageGainWrink,
   CacheAverageGainWrinkFattest,
-  CacheDoRemakeBuildPrices,
+  CacheDoRemakeBuildPrices, // eslint-disable-line no-unused-vars
   CacheObjects1,
   CacheObjects10,
   CacheObjects100,
+  CacheObjectsNextAchievement,
   CacheUpgrades,
 } from '../VariablesAndData';
 
@@ -46,10 +44,8 @@ function CacheUpgradeIncome() {
     const bonusIncome = BuyUpgradesBonusIncome(i);
     if (i === 'Elder Pledge') {
       CacheUpgrades[i] = { bonus: Game.cookiesPs - CacheAverageGainBank };
-      if (CMOptions.CalcWrink === 1)
-        CacheUpgrades[i].bonus -= CacheAverageGainWrink;
-      else if (CMOptions.CalcWrink === 2)
-        CacheUpgrades[i].bonus -= CacheAverageGainWrinkFattest;
+      if (CMOptions.CalcWrink === 1) CacheUpgrades[i].bonus -= CacheAverageGainWrink;
+      else if (CMOptions.CalcWrink === 2) CacheUpgrades[i].bonus -= CacheAverageGainWrinkFattest;
       if (!Number.isFinite(CacheUpgrades[i].bonus)) CacheUpgrades[i].bonus = 0;
     } else {
       CacheUpgrades[i] = {};
@@ -84,6 +80,13 @@ export function CacheBuildingsPrices() {
       Game.Objects[i].amount,
       Game.Objects[i].free,
       100,
+    );
+    CacheObjectsNextAchievement[i].price = BuildingGetPrice(
+      Game.Objects[i],
+      Game.Objects[i].basePrice,
+      Game.Objects[i].amount,
+      Game.Objects[i].free,
+      CacheObjectsNextAchievement[i].AmountNeeded,
     );
   });
 }

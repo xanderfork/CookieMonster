@@ -1,8 +1,4 @@
-/* eslint-disable no-unused-vars */
-import {
-  CacheSpawnedGoldenShimmer,
-  CacheGoldenShimmersByID,
-} from '../../Cache/VariablesAndData';
+import { CacheSpawnedGoldenShimmer, CacheGoldenShimmersByID } from '../../Cache/VariablesAndData'; // eslint-disable-line no-unused-vars
 import { CMOptions } from '../../Config/VariablesAndData';
 import CreateGCTimer from '../../Disp/GoldenCookieTimers/GoldenCookieTimers';
 import Flash from '../../Disp/Notifications/Flash';
@@ -49,7 +45,7 @@ export default function CheckGoldenCookie() {
     LastGoldenCookieState = Game.shimmerTypes.golden.n;
     if (LastGoldenCookieState) {
       if (LastSpawnedGoldenCookieState < CurrSpawnedGoldenCookieState) {
-        Flash(3, 'GCFlash');
+        Flash(3, 'GCFlash', false);
         PlaySound(CMOptions.GCSoundURL, 'GCSound', 'GCVolume', false);
         CreateNotification(
           'GCNotification',
@@ -70,11 +66,8 @@ export default function CheckGoldenCookie() {
   } else if (CMOptions.GCTimer === 1 && LastGoldenCookieState) {
     Object.keys(GCTimers).forEach((i) => {
       GCTimers[i].style.opacity = CacheGoldenShimmersByID[i].l.style.opacity;
-      GCTimers[i].style.transform =
-        CacheGoldenShimmersByID[i].l.style.transform;
-      GCTimers[i].textContent = Math.ceil(
-        CacheGoldenShimmersByID[i].life / Game.fps,
-      );
+      GCTimers[i].style.transform = CacheGoldenShimmersByID[i].l.style.transform;
+      GCTimers[i].textContent = Math.ceil(CacheGoldenShimmersByID[i].life / Game.fps);
     });
   }
 }

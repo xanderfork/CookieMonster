@@ -1,27 +1,23 @@
-/* eslint-disable no-unused-vars */
 import CacheDragonAuras from '../../Cache/Dragon/CacheDragonAuras';
-import {
-  CacheDragonAura,
-  CacheDragonAura2,
-} from '../../Cache/VariablesAndData';
+import { CacheDragonAura, CacheDragonAura2 } from '../../Cache/VariablesAndData';
 import { CreateBotBarBuildingColumn } from '../../Disp/InfoBars/CreateDOMElements';
 import InitAchievement from '../InitializeData/InitAchievement';
 import InitialBuildingData from '../InitializeData/InitialBuildingData';
 import InitUpgrade from '../InitializeData/InitUpgrade';
 import {
   SimAchievements,
-  SimAchievementsOwned,
-  SimDragonAura,
-  SimDragonAura2,
-  SimGod1,
-  SimGod2,
-  SimGod3,
-  SimHeavenlyPower,
+  SimAchievementsOwned, // eslint-disable-line no-unused-vars
+  SimDragonAura, // eslint-disable-line no-unused-vars
+  SimDragonAura2, // eslint-disable-line no-unused-vars
+  SimGod1, // eslint-disable-line no-unused-vars
+  SimGod2, // eslint-disable-line no-unused-vars
+  SimGod3, // eslint-disable-line no-unused-vars
+  SimHeavenlyPower, // eslint-disable-line no-unused-vars
   SimObjects,
-  SimPledges,
-  SimPrestige,
+  SimPledges, // eslint-disable-line no-unused-vars
+  SimPrestige, // eslint-disable-line no-unused-vars
   SimUpgrades,
-  SimUpgradesOwned,
+  SimUpgradesOwned, // eslint-disable-line no-unused-vars
 } from '../VariablesAndData';
 
 /**

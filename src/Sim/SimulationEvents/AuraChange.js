@@ -1,14 +1,10 @@
-/* eslint-disable no-unused-vars */
-import {
-  CacheDragonAura,
-  CacheDragonAura2,
-} from '../../Cache/VariablesAndData';
+import { CacheDragonAura, CacheDragonAura2 } from '../../Cache/VariablesAndData';
 import CalculateGains from '../Calculations/CalculateGains';
 import CheckOtherAchiev from '../Calculations/CheckOtherAchiev';
 import CopyData from '../SimulationData/CopyData';
 import {
   SimAchievementsOwned,
-  SimBuildingsOwned,
+  SimBuildingsOwned, // eslint-disable-line no-unused-vars
   SimCookiesPs,
   SimDragonAura,
   SimDragonAura2,
@@ -25,32 +21,22 @@ export default function CalculateChangeAura(aura) {
   CopyData();
 
   // Check if aura being changed is first or second aura
-  const auraToBeChanged = l('promptContent').children[0].innerHTML.includes(
-    'secondary',
-  );
+  const auraToBeChanged = l('promptContent').children[0].innerHTML.includes('secondary');
   if (auraToBeChanged) SimDragonAura2 = aura;
   else SimDragonAura = aura;
 
   // Sell highest building but only if aura is different
   let price = 0;
-  if (
-    SimDragonAura !== CacheDragonAura ||
-    SimDragonAura2 !== CacheDragonAura2
-  ) {
+  if (SimDragonAura !== CacheDragonAura || SimDragonAura2 !== CacheDragonAura2) {
     for (let i = Game.ObjectsById.length - 1; i > -1; --i) {
-      if (Game.ObjectsById[i - 1].amount > 0) {
+      if (Game.ObjectsById[i].amount > 0) {
         const highestBuilding = SimObjects[Game.ObjectsById[i].name].name;
         SimObjects[highestBuilding].amount -= 1;
         SimBuildingsOwned -= 1;
         price =
           SimObjects[highestBuilding].basePrice *
           Game.priceIncrease **
-            Math.max(
-              0,
-              SimObjects[highestBuilding].amount -
-                1 -
-                SimObjects[highestBuilding].free,
-            );
+            Math.max(0, SimObjects[highestBuilding].amount - 1 - SimObjects[highestBuilding].free);
         price = Game.modifyBuildingPrice(SimObjects[highestBuilding], price);
         price = Math.ceil(price);
         break;
