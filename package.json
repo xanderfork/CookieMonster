@@ -1,6 +1,6 @@
 {
-  "name": "cookiemonster-mod",
-  "version": "2.031.7",
+  "name": "@cookiemonsterteam/cookiemonster-mod",
+  "version": "2.031.10",
   "description": "Cookie Monster is an add-on that you can load into Cookie Clicker which offers a wide range of tools and statistics to enhance the game. It is not a cheat interface – although it does offer helpers for golden cookies and such, everything can be toggled off at will to only leave how much information you want. This is a helper and everything is an option.",
   "main": "CookieMonster.js",
   "keywords": [
@@ -11,11 +11,12 @@
     "Orteil"
   ],
   "scripts": {
-    "eslint-src": "eslint src test",
-    "build": "run-s eslint-src test pack-prod",
-    "build-test": "run-s pack-dev",
-    "pack-prod": "webpack --env production",
-    "pack-dev": "webpack",
+    "build-dev": "run-s eslint test pack-prod",
+    "build-final": "run-s eslint test pack-final",
+    "build-test": "webpack",
+    "eslint": "eslint src test",
+    "pack-prod": "webpack --env minimize",
+    "pack-final": "webpack --env minimize --env finalfile",
     "test": "mocha"
   },
   "repository": {
@@ -43,24 +44,24 @@
   },
   "homepage": "https://github.com/CookieMonsterTeam/CookieMonster#readme",
   "devDependencies": {
-    "@types/chai": "^4.2.18",
-    "@types/mocha": "^8.2.2",
-    "@typescript-eslint/eslint-plugin": "^4.26.1",
-    "@typescript-eslint/parser": "^4.26.1",
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
     "chai": "^4.3.4",
-    "eslint": "^7.28.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-import": "^2.24.2",
     "esm": "^3.2.25",
     "mocha": "^8.4.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "2.3.1",
-    "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.2",
-    "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.2"
+    "prettier": "2.3.2",
+    "ts-loader": "^9.2.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2",
+    "webpack": "^5.51.2",
+    "webpack-cli": "^4.8.0"
   },
   "ccrepo": {
     "icon": [
@@ -70,6 +71,7 @@
     "name": "Cookie Monster"
   },
   "dependencies": {
-    "@eastdesire/jscolor": "^2.4.5"
+    "@eastdesire/jscolor": "2.4.6",
+    "@cookiemonsterteam/cookiemonsterframework": "0.2.3"
   }
 }

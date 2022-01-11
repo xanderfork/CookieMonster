@@ -1,7 +1,4 @@
-import { CMOptions } from '../../Config/VariablesAndData';
-import Flash from '../../Disp/Notifications/Flash';
-import CreateNotification from '../../Disp/Notifications/Notification';
-import PlaySound from '../../Disp/Notifications/Sound';
+import { notificationsFunctions as nF } from '@cookiemonsterteam/cookiemonsterframework/src/index';
 import { LastMagicBarFull } from '../VariablesAndData';
 
 /**
@@ -9,14 +6,24 @@ import { LastMagicBarFull } from '../VariablesAndData';
  * It is called by CM.Main.Loop
  */
 export default function CheckMagicMeter() {
-  if (Game.Objects['Wizard tower'].minigameLoaded && CMOptions.GrimoireBar === 1) {
+  if (
+    Game.Objects['Wizard tower'].minigameLoaded &&
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.GrimoireBar === 1
+  ) {
     const { minigame } = Game.Objects['Wizard tower'];
     if (minigame.magic < minigame.magicM) LastMagicBarFull = false;
     else if (!LastMagicBarFull) {
       LastMagicBarFull = true;
-      Flash(3, 'MagicFlash', false);
-      PlaySound(CMOptions.MagicSoundURL, 'MagicSound', 'MagicVolume', false);
-      CreateNotification(
+      nF.createFlash('cookieMonsterMod', 3, 'MagicFlash', false);
+      nF.playCMSound(
+        'cookieMonsterMod',
+        Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.MagicSoundURL,
+        'MagicSound',
+        'MagicVolume',
+        false,
+      );
+      nF.createNotification(
+        'cookieMonsterMod',
         'MagicNotification',
         'Magic Meter full',
         'Your Magic Meter is full. Cast a spell!',

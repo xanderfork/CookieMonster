@@ -4,11 +4,11 @@ import { AddMissingUpgrades } from './CreateMissingUpgrades';
 import * as CreateSections from './CreateStatsSections';
 import * as CreateElements from './CreateDOMElements';
 import * as GameData from '../../../Data/Gamedata.ts';
-import { CMOptions } from '../../../Config/VariablesAndData';
 
 import {
   CacheAverageClicks,
   CacheAverageCookiesFromClicks,
+  CacheObjectsNextAchievement,
   CacheWrinklersFattest,
   CacheWrinklersNormal,
   CacheWrinklersTotal,
@@ -30,37 +30,37 @@ export default function AddMenuStats(title) {
   stats.appendChild(title);
 
   stats.appendChild(CreateElements.StatsHeader('Lucky Cookies', 'Lucky'));
-  if (CMOptions.Header.Lucky) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Lucky) {
     stats.appendChild(CreateSections.LuckySection());
   }
 
   stats.appendChild(CreateElements.StatsHeader('Chain Cookies', 'Chain'));
-  if (CMOptions.Header.Chain) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Chain) {
     stats.appendChild(CreateSections.ChainSection());
   }
 
   if (Game.Objects['Wizard tower'].minigameLoaded) {
     stats.appendChild(CreateElements.StatsHeader('Spells', 'Spells'));
-    if (CMOptions.Header.Spells) {
+    if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Spells) {
       stats.appendChild(CreateSections.SpellsSection());
     }
   }
 
   if (Game.Objects.Farm.minigameLoaded) {
     stats.appendChild(CreateElements.StatsHeader('Garden', 'Garden'));
-    if (CMOptions.Header.Garden) {
+    if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Garden) {
       stats.appendChild(CreateSections.GardenSection());
     }
   }
 
   stats.appendChild(CreateElements.StatsHeader('Prestige', 'Prestige'));
-  if (CMOptions.Header.Prestige) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Prestige) {
     stats.appendChild(CreateSections.PrestigeSection());
   }
 
   if (Game.cpsSucked > 0) {
     stats.appendChild(CreateElements.StatsHeader('Wrinklers', 'Wrink'));
-    if (CMOptions.Header.Wrink) {
+    if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Wrink) {
       const popAllFrag = document.createDocumentFragment();
       popAllFrag.appendChild(
         document.createTextNode(
@@ -100,16 +100,47 @@ export default function AddMenuStats(title) {
 
   stats.appendChild(CreateSections.SeasonSection());
 
+  stats.appendChild(CreateElements.StatsHeader('Achievements', 'Achievs'));
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Achievs) {
+    Object.keys(Game.Objects).forEach((i) => {
+      const ObjectsTillNext = CacheObjectsNextAchievement[i];
+      stats.appendChild(
+        CreateElements.StatsListing(
+          'basic',
+          i,
+          ObjectsTillNext.AmountNeeded < 101
+            ? document.createTextNode(
+                `Next achievement in ${ObjectsTillNext.AmountNeeded}, price: ${Beautify(
+                  ObjectsTillNext.price,
+                )}`,
+              )
+            : document.createTextNode('No new achievement for next 100 buildings'),
+        ),
+      );
+    });
+  }
+
   stats.appendChild(CreateElements.StatsHeader('Miscellaneous', 'Misc'));
-  if (CMOptions.Header.Misc) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.headers.Misc) {
     stats.appendChild(
       CreateElements.StatsListing(
         'basic',
         `Average cookies per second (past ${
-          CookieTimes[CMOptions.AvgCPSHist] < 60
-            ? `${CookieTimes[CMOptions.AvgCPSHist]} seconds`
-            : CookieTimes[CMOptions.AvgCPSHist] / 60 +
-              (CMOptions.AvgCPSHist === 3 ? ' minute' : ' minutes')
+          CookieTimes[
+            Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgCPSHist
+          ] < 60
+            ? `${
+                CookieTimes[
+                  Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgCPSHist
+                ]
+              } seconds`
+            : CookieTimes[
+                Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgCPSHist
+              ] /
+                60 +
+              (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgCPSHist === 3
+                ? ' minute'
+                : ' minutes')
         })`,
         document.createTextNode(Beautify(GetCPS(), 3)),
       ),
@@ -117,8 +148,14 @@ export default function AddMenuStats(title) {
     stats.appendChild(
       CreateElements.StatsListing(
         'basic',
-        `Average cookie clicks per second (past ${ClickTimes[CMOptions.AvgClicksHist]}${
-          CMOptions.AvgClicksHist === 0 ? ' second' : ' seconds'
+        `Average cookie clicks per second (past ${
+          ClickTimes[
+            Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgClicksHist
+          ]
+        }${
+          Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgClicksHist === 0
+            ? ' second'
+            : ' seconds'
         })`,
         document.createTextNode(Beautify(CacheAverageClicks, 1)),
       ),
@@ -126,13 +163,22 @@ export default function AddMenuStats(title) {
     stats.appendChild(
       CreateElements.StatsListing(
         'basic',
-        `Cookies from clicking (past ${ClickTimes[CMOptions.AvgClicksHist]}${
-          CMOptions.AvgClicksHist === 0 ? ' second' : ' seconds'
+        `Cookies from clicking (past ${
+          ClickTimes[
+            Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgClicksHist
+          ]
+        }${
+          Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgClicksHist === 0
+            ? ' second'
+            : ' seconds'
         })`,
         document.createTextNode(
           Beautify(
             CacheAverageCookiesFromClicks.calcSum(
-              CacheAverageClicks * ClickTimes[CMOptions.AvgClicksHist],
+              CacheAverageClicks *
+                ClickTimes[
+                  Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AvgClicksHist
+                ],
             ),
           ),
         ),
@@ -154,7 +200,7 @@ export default function AddMenuStats(title) {
           ),
         );
     }
-    if (CMOptions.ShowMissedGC) {
+    if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.ShowMissedGC) {
       stats.appendChild(
         CreateElements.StatsListing(
           'basic',
@@ -176,10 +222,10 @@ export default function AddMenuStats(title) {
 
   l('menu').insertBefore(stats, l('menu').childNodes[2]);
 
-  if (CMOptions.MissingUpgrades) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.MissingUpgrades) {
     AddMissingUpgrades();
   }
-  if (CMOptions.MissingAchievements) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.MissingAchievements) {
     AddMissingAchievements();
   }
 }

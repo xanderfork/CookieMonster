@@ -1,5 +1,5 @@
 import { CacheNoGoldSwitchCookiesPS } from '../../../Cache/VariablesAndData';
-import { CMOptions } from '../../../Config/VariablesAndData';
+
 import Beautify from '../../BeautifyAndFormatting/Beautify';
 import GetTimeColour from '../../BeautifyAndFormatting/GetTimeColour';
 import CalculateGrimoireRefillTime from '../../HelperFunctions/CalculateGrimoireRefillTime';
@@ -15,7 +15,10 @@ export default function Grimoire() {
   const { minigame } = Game.Objects['Wizard tower'];
   const spellCost = minigame.getSpellCost(minigame.spellsById[TooltipName]);
 
-  if (CMOptions.TooltipGrim === 1 && spellCost <= minigame.magicM) {
+  if (
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TooltipGrim === 1 &&
+    spellCost <= minigame.magicM
+  ) {
     const tooltipBox = l('CMTooltipBorder');
 
     // Time left till enough magic for spell
@@ -27,7 +30,7 @@ export default function Grimoire() {
       CalculateGrimoireRefillTime(minigame.magic, minigame.magicM, spellCost),
     );
     time.textContent = timeColour.text;
-    time.className = ColourTextPre + timeColour.color;
+    time.className = ColourTextPre + timeColour.colour;
 
     // Time left untill magic spent is recovered
     if (spellCost <= minigame.magic) {
@@ -43,7 +46,7 @@ export default function Grimoire() {
         ),
       );
       recover.textContent = recoverColour.text;
-      recover.className = ColourTextPre + recoverColour.color;
+      recover.className = ColourTextPre + recoverColour.colour;
     }
 
     // Extra information on cookies gained when spell is Conjure Baked Goods (Name === 0)

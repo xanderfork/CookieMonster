@@ -1,9 +1,10 @@
-import { CMOptions } from '../../Config/VariablesAndData';
 import GetWrinkConfigBank from '../../Disp/HelperFunctions/GetWrinkConfigBank';
 import { ColourGray } from '../../Disp/VariablesAndData';
+import BuildingGetPrice from '../../Sim/SimulationEvents/BuyBuilding';
+import FillCMDCache from '../FillCMDCache';
 import {
-  CacheMinPP, // eslint-disable-line no-unused-vars
-  CacheMinPPBulk, // eslint-disable-line no-unused-vars
+  CacheMinPP,
+  CacheMinPPBulk,
   CacheObjects1,
   CacheObjects10,
   CacheObjects100,
@@ -18,28 +19,55 @@ import ColourOfPP from './ColourOfPP';
  */
 function CacheColour(target, amount) {
   Object.keys(target).forEach((i) => {
-    if (CMOptions.PPRigidelMode && amount === 1) {
-      target[i].color = ColourGray; // eslint-disable-line no-param-reassign
+    if (
+      Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPRigidelMode &&
+      amount === 1
+    ) {
+      target[i].colour = ColourGray; // eslint-disable-line no-param-reassign
       return;
     }
     // eslint-disable-next-line no-param-reassign
-    target[i].color = ColourOfPP(target[i], Game.Objects[i].getSumPrice(amount));
+    target[i].colour = ColourOfPP(
+      target[i],
+      BuildingGetPrice(
+        i,
+        Game.Objects[i].basePrice,
+        Game.Objects[i].amount,
+        Game.Objects[i].free,
+        amount,
+      ),
+    );
     // Colour based on excluding certain top-buildings
-    for (let j = 0; j < CMOptions.PPExcludeTop; j++) {
-      if (target[i].pp === CachePPArray[j][0]) target[i].color = ColourGray; // eslint-disable-line no-param-reassign
+    for (
+      let j = 0;
+      j < Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPExcludeTop;
+      j++
+    ) {
+      if (target[i].pp === CachePPArray[j][0]) target[i].colour = ColourGray; // eslint-disable-line no-param-reassign
     }
   });
 }
 
 function CachePP(target, amount) {
   Object.keys(target).forEach((i) => {
-    const price = Game.Objects[i].getSumPrice(amount);
+    const price = BuildingGetPrice(
+      i,
+      Game.Objects[i].basePrice,
+      Game.Objects[i].amount,
+      Game.Objects[i].free,
+      amount,
+    );
     if (Game.cookiesPs) {
       target[i].pp = // eslint-disable-line no-param-reassign
         Math.max(price - (Game.cookies + GetWrinkConfigBank()), 0) / Game.cookiesPs +
         price / target[i].bonus;
     } else target[i].pp = price / target[i].bonus; // eslint-disable-line no-param-reassign
-    if (!(CMOptions.PPRigidelMode && amount === 1))
+    if (
+      !(
+        Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPRigidelMode &&
+        amount === 1
+      )
+    )
       CachePPArray.push([target[i].pp, amount, price]);
   });
 }
@@ -51,17 +79,21 @@ function CachePP(target, amount) {
 export default function CacheBuildingsPP() {
   CacheMinPP = Infinity;
   CachePPArray = [];
-  if (typeof CMOptions.PPExcludeTop === 'undefined') CMOptions.PPExcludeTop = 0; // Otherwise breaks during initialization
+  if (
+    typeof Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPExcludeTop ===
+    'undefined'
+  )
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPExcludeTop = 0; // Otherwise breaks during initialization
 
-  // Calculate PP and colors
+  // Calculate PP and colours
   CachePP(CacheObjects1, 1);
   CachePP(CacheObjects10, 10);
   CachePP(CacheObjects100, 100);
 
   // Set CM.Cache.min to best non-excluded buidliung
   CachePPArray.sort((a, b) => a[0] - b[0]);
-  let indexOfMin = CMOptions.PPExcludeTop;
-  if (CMOptions.PPOnlyConsiderBuyable) {
+  let indexOfMin = Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPExcludeTop;
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPOnlyConsiderBuyable) {
     while (CachePPArray[indexOfMin][2] > Game.cookies) {
       indexOfMin += 1;
       if (CachePPArray.length === indexOfMin + 1) {
@@ -75,4 +107,6 @@ export default function CacheBuildingsPP() {
   CacheColour(CacheObjects1, 1);
   CacheColour(CacheObjects10, 10);
   CacheColour(CacheObjects100, 100);
+
+  FillCMDCache({ CacheMinPP, CacheMinPPBulk, CachePPArray });
 }

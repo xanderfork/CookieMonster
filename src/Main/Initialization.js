@@ -1,6 +1,5 @@
 import InitCache from '../Cache/CacheInit';
 import { CacheStatsCookies } from '../Cache/Stats/Stats';
-import { LoadConfig } from '../Config/SaveLoadReload/SaveLoadReloadSettings';
 import { VersionMajor, VersionMinor } from '../Data/Moddata.ts';
 import CreateUpgradeBar from '../Disp/BuildingsUpgrades/UpgradeBar';
 import { CreateBotBar } from '../Disp/InfoBars/BottomBar';
@@ -9,7 +8,6 @@ import CreateSectionHideButtons from '../Disp/Initialization/CreateSectionHideBu
 import CreateWrinklerButtons from '../Disp/Initialization/CreateWrinklerButton';
 import CreateCssArea from '../Disp/Initialization/CssArea';
 import UpdateBuildingUpgradeStyle from '../Disp/Initialization/UpdateBuildingUpgradeStyle';
-import CreateFlashScreen from '../Disp/Initialization/FlashScreen';
 import { CreateFavicon } from '../Disp/TabTitle/FavIcon';
 import { CreateSimpleTooltip } from '../Disp/Tooltips/Tooltip';
 import { CMLastAscendState, TooltipText } from '../Disp/VariablesAndData'; // eslint-disable-line no-unused-vars
@@ -19,6 +17,9 @@ import ReplaceTooltips from './ReplaceGameElements/Tooltips';
 import ReplaceNative from './ReplaceGameFunctions/ReplaceNative';
 import { LastModCount } from './VariablesAndData'; // eslint-disable-line no-unused-vars
 import AddWrinklerAreaDetect from './WrinklerArea/AddDetectArea';
+import createBuildingLockButtons from '../Disp/buildingTiles/createBuildingLockButtons';
+// import createMenuInfo from '../Disp/MenuSections/createMenuInfo';
+import createMenuOptions from '../Disp/MenuSections/createMenuOptions';
 
 /**
  * Initialization loop of Cookie Monster
@@ -26,6 +27,11 @@ import AddWrinklerAreaDetect from './WrinklerArea/AddDetectArea';
 export default function InitializeCookieMonster() {
   // Create global data object
   window.CookieMonsterData = {};
+
+  // Register listeners in Cookie Monster Mod Framework
+  // Commented because Framework is currently broken
+  // Game.mods.cookieMonsterFramework.listeners.infoMenu.push(createMenuInfo);
+  Game.mods.cookieMonsterFramework.listeners.optionsMenu.push(createMenuOptions);
 
   InitData();
   CacheStatsCookies();
@@ -39,7 +45,6 @@ export default function InitializeCookieMonster() {
   CreateBotBar();
   CreateTimerBar();
   CreateUpgradeBar();
-  CreateFlashScreen();
   CreateSectionHideButtons();
   CreateFavicon();
   Object.keys(TooltipText).forEach((i) => {
@@ -47,6 +52,7 @@ export default function InitializeCookieMonster() {
   });
   CreateWrinklerButtons();
   UpdateBuildingUpgradeStyle();
+  createBuildingLockButtons();
 
   ReplaceTooltips();
   AddWrinklerAreaDetect();
@@ -56,7 +62,6 @@ export default function InitializeCookieMonster() {
   ReplaceNativeGrimoire();
   Game.CalculateGains();
 
-  LoadConfig();
   CMLastAscendState = Game.OnAscend;
 
   if (Game.prefs.popups)

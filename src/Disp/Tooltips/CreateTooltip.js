@@ -1,4 +1,3 @@
-import { CMOptions } from '../../Config/VariablesAndData';
 import {
   ColourTextPre,
   ColourBorderPre,
@@ -54,18 +53,18 @@ export function TooltipCreateWarningSection() {
   TooltipWarn.style.bottom = 'auto';
   TooltipWarn.id = 'CMDispTooltipWarningParent';
 
-  const create = function (boxId, color, labelTextFront, labelTextBack, deficitId) {
+  const create = function (boxId, colour, labelTextFront, labelTextBack, deficitId) {
     const box = document.createElement('div');
     box.id = boxId;
     box.style.display = 'none';
     box.style.transition = 'opacity 0.1s ease-out';
-    box.className = ColourBorderPre + color;
+    box.className = ColourBorderPre + colour;
     box.style.padding = '2px';
     box.style.background = '#000 url(img/darkNoise.png)';
     const labelDiv = document.createElement('div');
     box.appendChild(labelDiv);
     const labelSpan = document.createElement('span');
-    labelSpan.className = ColourTextPre + color;
+    labelSpan.className = ColourTextPre + colour;
     labelSpan.style.fontWeight = 'bold';
     labelSpan.textContent = labelTextFront;
     labelDiv.appendChild(labelSpan);
@@ -134,7 +133,7 @@ export function TooltipCreateWarningSection() {
       'CMDispTooltipWarnUser',
       ColourRed,
       'Warning: ',
-      `Purchase of this item will put you under the number of Cookies equal to ${CMOptions.ToolWarnUser} seconds of CPS`,
+      `Purchase of this item will put you under the number of Cookies equal to ${Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.ToolWarnUser} seconds of CPS`,
       'CMDispTooltipWarnUserText',
     ),
   );

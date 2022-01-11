@@ -3,7 +3,6 @@ import {
   CacheLastHeavenlyChips,
   CacheTimeTillNextPrestige,
 } from '../../Cache/VariablesAndData';
-import { CMOptions } from '../../Config/VariablesAndData';
 import Beautify from '../BeautifyAndFormatting/Beautify';
 
 /**
@@ -21,16 +20,15 @@ export default function ReplaceAscendTooltip() {
   );
 
   const startDate = Game.sayTime(((Date.now() - Game.startDate) / 1000) * Game.fps, -1);
-  let str = '';
-  str += `You've been on this run for <b>${
+  let str = `You've been on this run for <b>${
     startDate === '' ? 'not very long' : startDate
-  }</b>.<br>`;
-  str += '<div class="line"></div>';
+  }</b>.<br>
+  <div class="line"></div>`;
   if (Game.prestige > 0) {
     str += `Your prestige level is currently <b>${Beautify(Game.prestige)}</b>.<br>(CpS +${Beautify(
       Game.prestige,
-    )}%)`;
-    str += '<div class="line"></div>';
+    )}%)
+    <div class="line"></div>`;
   }
   if (CacheLastHeavenlyChips < 1) str += 'Ascending now would grant you no prestige.';
   else if (CacheLastHeavenlyChips < 2)
@@ -42,10 +40,10 @@ export default function ReplaceAscendTooltip() {
     )} prestige levels</b> (+${Beautify(CacheLastHeavenlyChips)}% CpS)<br>and <b>${Beautify(
       CacheLastHeavenlyChips,
     )} heavenly chips</b> to spend.`;
-  str += '<div class="line"></div>';
-  str += `You need <b>${Beautify(cookiesToNext)} more cookies</b> for the next level.<br>`;
-  str += `${
-    CMOptions.TooltipAscendButton
+  str += `<div class="line"></div>
+  You need <b>${Beautify(cookiesToNext)} more cookies</b> for the next level.<br>
+  ${
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TooltipAscendButton
       ? `<div class='line'></div>It takes ${CacheTimeTillNextPrestige} to reach the next level and you were making ${Beautify(
           CacheHCPerSecond,
           2,

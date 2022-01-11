@@ -3,6 +3,7 @@
 import Beautify from '../../Disp/BeautifyAndFormatting/Beautify';
 import CopyData from '../../Sim/SimulationData/CopyData';
 import { SimDoSims, SimObjects } from '../../Sim/VariablesAndData';
+import FillCMDCache from '../FillCMDCache';
 import { CacheCostDragonUpgrade, CacheLastDragonLevel } from '../VariablesAndData'; // eslint-disable-line no-unused-vars
 
 /**
@@ -14,7 +15,8 @@ export default function CacheDragonCost() {
       Game.dragonLevel < 25 &&
       Game.dragonLevels[Game.dragonLevel].buy.toString().includes('sacrifice')
     ) {
-      let target = Game.dragonLevels[Game.dragonLevel].buy.toString().match(/Objects\[(.*)\]/)[1];
+      const objectMatch = Game.dragonLevels[Game.dragonLevel].buy.toString().match(/Objects\[(.*)\]/);
+      let target = objectMatch !== null ? objectMatch[1] : Game.ObjectsById[Game.dragonLevel-5].name;
       const amount = Game.dragonLevels[Game.dragonLevel].buy
         .toString()
         .match(/sacrifice\((.*?)\)/)[1];
@@ -62,4 +64,6 @@ export default function CacheDragonCost() {
     }
     CacheLastDragonLevel = Game.dragonLevel;
   }
+
+  FillCMDCache({ CacheLastDragonLevel });
 }

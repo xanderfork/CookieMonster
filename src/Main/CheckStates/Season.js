@@ -1,8 +1,5 @@
+import { notificationsFunctions as nF } from '@cookiemonsterteam/cookiemonsterframework/src/index';
 import { CacheSeasonPopShimmer } from '../../Cache/VariablesAndData'; // eslint-disable-line no-unused-vars
-import { CMOptions } from '../../Config/VariablesAndData';
-import Flash from '../../Disp/Notifications/Flash';
-import CreateNotification from '../../Disp/Notifications/Notification';
-import PlaySound from '../../Disp/Notifications/Sound';
 import { LastSeasonPopupState } from '../VariablesAndData';
 
 /**
@@ -17,9 +14,16 @@ export default function CheckSeasonPopup() {
         CacheSeasonPopShimmer = Game.shimmers[i];
       }
     });
-    Flash(3, 'SeaFlash', false);
-    PlaySound(CMOptions.SeaSoundURL, 'SeaSound', 'SeaVolume', false);
-    CreateNotification(
+    nF.createFlash('cookieMonsterMod', 3, 'SeaFlash', false);
+    nF.playCMSound(
+      'cookieMonsterMod',
+      Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.SeaSoundURL,
+      'SeaSound',
+      'SeaVolume',
+      false,
+    );
+    nF.createNotification(
+      'cookieMonsterMod',
       'SeaNotification',
       'Reindeer sighted!',
       'A Reindeer has spawned. Click it now!',

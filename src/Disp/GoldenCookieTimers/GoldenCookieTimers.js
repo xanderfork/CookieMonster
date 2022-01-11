@@ -1,6 +1,5 @@
 /** Section: Functions related to the Golden Cookie Timers */
 
-import { CMOptions } from '../../Config/VariablesAndData';
 import { GCTimers } from '../VariablesAndData';
 
 /**
@@ -20,7 +19,9 @@ export default function CreateGCTimer(cookie) {
   GCTimer.style.fontSize = '35px';
   GCTimer.style.cursor = 'pointer';
   GCTimer.style.display = 'block';
-  if (CMOptions.GCTimer === 0) GCTimer.style.display = 'none';
+  GCTimer.style.pointerEvents = 'none';
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.GCTimer === 0)
+    GCTimer.style.display = 'none';
   GCTimer.style.left = cookie.l.style.left;
   GCTimer.style.top = cookie.l.style.top;
   GCTimer.onclick = function () {

@@ -1,7 +1,6 @@
 /** Functions related to the Bottom Bar */
 
 import { CacheObjects1, CacheObjects10, CacheObjects100 } from '../../Cache/VariablesAndData';
-import { CMOptions } from '../../Config/VariablesAndData';
 import { VersionMajor, VersionMinor } from '../../Data/Moddata.ts';
 import Beautify from '../BeautifyAndFormatting/Beautify';
 import FormatTime from '../BeautifyAndFormatting/FormatTime';
@@ -34,10 +33,10 @@ export function CreateBotBar() {
   table.style.whiteSpace = 'nowrap';
   const tbody = table.appendChild(document.createElement('tbody'));
 
-  const firstCol = function (text, color) {
+  const firstCol = function (text, colour) {
     const td = document.createElement('td');
     td.style.textAlign = 'right';
-    td.className = ColourTextPre + color;
+    td.className = ColourTextPre + colour;
     td.textContent = text;
     return td;
   };
@@ -62,7 +61,11 @@ export function CreateBotBar() {
  * This function updates the bonus-, pp-, and time-rows in the the bottom bar
  */
 export function UpdateBotBar() {
-  if (CMOptions.BotBar === 1 && CacheObjects1 && Game.buyMode === 1) {
+  if (
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.BotBar === 1 &&
+    CacheObjects1 &&
+    Game.buyMode === 1
+  ) {
     let count = 0;
     Object.keys(CacheObjects1).forEach((i) => {
       let target = Game.buyBulk;
@@ -83,16 +86,17 @@ export function UpdateBotBar() {
         2,
       );
       l('CMBotBar').firstChild.firstChild.childNodes[2].childNodes[count].className =
-        ColourTextPre + target[i].color;
+        ColourTextPre + target[i].colour;
       let PPString;
-      if (CMOptions.PPDisplayTime) PPString = FormatTime(Math.round(target[i].pp));
+      if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.PPDisplayTime)
+        PPString = FormatTime(Math.round(target[i].pp));
       else PPString = Beautify(Math.round(target[i].pp), 2);
       l('CMBotBar').firstChild.firstChild.childNodes[2].childNodes[count].textContent = PPString;
       const timeColour = GetTimeColour(
         (Game.Objects[i].bulkPrice - (Game.cookies + GetWrinkConfigBank())) / GetCPS(),
       );
       l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[count].className =
-        ColourTextPre + timeColour.color;
+        ColourTextPre + timeColour.colour;
       if (timeColour.text === 'Done!' && Game.cookies < Game.Objects[i].bulkPrice) {
         l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[
           count

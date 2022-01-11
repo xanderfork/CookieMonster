@@ -1,6 +1,10 @@
-import { LoadConfig } from '../Config/SaveLoadReload/SaveLoadReloadSettings';
+import { saveAndLoadingFunctions } from '@cookiemonsterteam/cookiemonsterframework/src/index';
+
+import headers from '../Data/headers';
 import { VersionMajor, VersionMinor } from '../Data/Moddata.ts';
-import { FavouriteSettings } from '../Disp/VariablesAndData'; // eslint-disable-line no-unused-vars
+import settings from '../Data/settings';
+import UpdateColours from '../Disp/HelperFunctions/UpdateColours';
+import CMLoopHook from '../Main/LoopHook';
 import InitData from '../Sim/InitializeData/InitData';
 
 /**
@@ -8,12 +12,38 @@ import InitData from '../Sim/InitializeData/InitData';
  * "do stuff with the string data you saved previously"
  */
 export default function load(str) {
-  const save = JSON.parse(str);
   InitData();
-  // The if-statement is a failsafe for old saves
-  if (typeof save.favouriteSettings !== 'undefined') FavouriteSettings = save.favouriteSettings;
-  LoadConfig(save.settings);
-  if (save.version !== `${VersionMajor}.${VersionMinor}`) {
+
+  // Load saveData
+  saveAndLoadingFunctions.loadMod('cookieMonsterMod', str, settings, headers, CMLoopHook);
+  if (
+    typeof Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.lockedMinigames ===
+    'undefined'
+  ) {
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.lockedMinigames = [];
+  }
+
+  // Update display with colours and locking of minigames
+  UpdateColours();
+  for (
+    let index = 0;
+    index < Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.lockedMinigames.length;
+    index++
+  ) {
+    const buildingIndex =
+      Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.lockedMinigames[index];
+    l(`row${buildingIndex}`).style.pointerEvents = 'none';
+    l(`row${buildingIndex}`).style.opacity = '0.4';
+    l(`productLock${buildingIndex}`).innerHTML = 'Unlock';
+    l(`productLock${buildingIndex}`).style.pointerEvents = 'auto';
+  }
+
+  // Notify of update
+  if (
+    typeof Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.version !== 'undefined' &&
+    Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.version !==
+      `${VersionMajor}.${VersionMinor}`
+  ) {
     if (Game.prefs.popups)
       Game.Popup(
         'A new version of Cookie Monster has been loaded, check out the release notes in the info tab!',

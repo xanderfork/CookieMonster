@@ -1,4 +1,3 @@
-import { CMOptions } from '../../Config/VariablesAndData';
 import FormatTime from '../../Disp/BeautifyAndFormatting/FormatTime';
 import CalculateGrimoireRefillTime from '../../Disp/HelperFunctions/CalculateGrimoireRefillTime';
 import {
@@ -19,10 +18,15 @@ function ReplaceNativeGrimoireDraw() {
     BackupGrimoireDraw = minigame.draw;
     Game.Objects['Wizard tower'].minigame.draw = function () {
       BackupGrimoireDraw();
-      if (CMOptions.GrimoireBar === 1 && minigame.magic < minigame.magicM) {
+      if (
+        Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.GrimoireBar === 1 &&
+        minigame.magic < minigame.magicM &&
+        (typeof Steam === 'undefined' || Game.drawT % 5 === 0)
+      ) {
         minigame.magicBarTextL.innerHTML += ` (${FormatTime(
           CalculateGrimoireRefillTime(minigame.magic, minigame.magicM, minigame.magicM),
         )})`;
+        minigame.magicBarL.style.width = "75%" // TODO: Fix this after Orteil pushes fix to main game;
       }
     };
     HasReplaceNativeGrimoireDraw = true;

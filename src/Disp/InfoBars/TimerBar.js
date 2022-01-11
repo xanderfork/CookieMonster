@@ -1,7 +1,6 @@
 /** Functions related to the Timer Bar */
 
 import { UpdateBotTimerBarPosition } from '../../Config/SpecificToggles';
-import { CMOptions } from '../../Config/VariablesAndData';
 import {
   BuffColours,
   ColourBackPre,
@@ -27,21 +26,21 @@ export function CreateTimerBar() {
 
   // Create standard Autosave bar
   const CMTimerBarAutosave = CreateTimer('CMTimerBarAutosave', 'Autosave', [
-    { id: 'CMTimerBarAutosaveBar', color: ColourPurple },
+    { id: 'CMTimerBarAutosaveBar', colour: ColourPurple },
   ]);
   TimerBar.appendChild(CMTimerBarAutosave);
 
   // Create standard Golden Cookie bar
   const CMTimerBarGC = CreateTimer('CMTimerBarGC', 'Next Cookie', [
-    { id: 'CMTimerBarGCMinBar', color: ColourGray },
-    { id: 'CMTimerBarGCBar', color: ColourPurple },
+    { id: 'CMTimerBarGCMinBar', colour: ColourGray },
+    { id: 'CMTimerBarGCBar', colour: ColourPurple },
   ]);
   TimerBar.appendChild(CMTimerBarGC);
 
   // Create standard Reindeer bar
   const CMTimerBarRen = CreateTimer('CMTimerBarRen', 'Next Reindeer', [
-    { id: 'CMTimerBarRenMinBar', color: ColourGray },
-    { id: 'CMTimerBarRenBar', color: ColourOrange },
+    { id: 'CMTimerBarRenMinBar', colour: ColourGray },
+    { id: 'CMTimerBarRenBar', colour: ColourOrange },
   ]);
   TimerBar.appendChild(CMTimerBarRen);
   const TimerBarBuffTimers = document.createElement('div');
@@ -55,14 +54,17 @@ export function CreateTimerBar() {
  * This function updates indivudual timers in the timer bar
  */
 export function UpdateTimerBar() {
-  if (CMOptions.TimerBar === 1) {
+  if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBar === 1) {
     // label width: 113, timer width: 30, div margin: 20
     const maxWidthTwoBar = l('CMTimerBar').offsetWidth - 163;
     // label width: 113, div margin: 20, calculate timer width at runtime
     const maxWidthOneBar = l('CMTimerBar').offsetWidth - 133;
     let numberOfTimers = 0;
 
-    if (CMOptions.AutosaveTimerBar && Game.prefs.autosave) {
+    if (
+      Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.AutosaveTimerBar &&
+      Game.prefs.autosave
+    ) {
       const timeTillNextAutosave =
         (Game.fps * 60 - (Game.OnAscend ? 0 : Game.T % (Game.fps * 60))) / Game.fps;
       l('CMTimerBarAutosave').style.display = '';
@@ -71,7 +73,9 @@ export function UpdateTimerBar() {
           (maxWidthOneBar - Math.ceil(timeTillNextAutosave).toString().length * 8)) /
           60,
       )}px`;
-      if (CMOptions.TimerBarOverlay >= 1) {
+      if (
+        Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay >= 1
+      ) {
         l('CMTimerBarAutosaveBar').textContent = Math.ceil(timeTillNextAutosave);
       } else l('CMTimerBarAutosaveBar').textContent = '';
       l('CMTimerBarAutosaveTime').textContent = Math.ceil(timeTillNextAutosave);
@@ -86,7 +90,7 @@ export function UpdateTimerBar() {
           maxWidthTwoBar) /
           Game.shimmerTypes.golden.maxTime,
       )}px`;
-      if (CMOptions.TimerBarOverlay >= 1)
+      if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay >= 1)
         l('CMTimerBarGCMinBar').textContent = Math.ceil(
           (Game.shimmerTypes.golden.minTime - Game.shimmerTypes.golden.time) / Game.fps,
         );
@@ -106,7 +110,7 @@ export function UpdateTimerBar() {
           maxWidthTwoBar) /
           Game.shimmerTypes.golden.maxTime,
       )}px`;
-      if (CMOptions.TimerBarOverlay >= 1)
+      if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay >= 1)
         l('CMTimerBarGCBar').textContent = Math.ceil(
           Math.min(
             Game.shimmerTypes.golden.maxTime - Game.shimmerTypes.golden.minTime,
@@ -114,9 +118,17 @@ export function UpdateTimerBar() {
           ) / Game.fps,
         );
       else l('CMTimerBarGCBar').textContent = '';
-      l('CMTimerBarGCTime').textContent = Math.ceil(
+      const chanceToSpawn =
+        Math.max(
+          0,
+          (Game.shimmerTypes.golden.time - Game.shimmerTypes.golden.minTime) /
+            (Game.shimmerTypes.golden.maxTime - Game.shimmerTypes.golden.minTime),
+        ) ** 5;
+      l('CMTimerBarGCTime').textContent = `${Math.ceil(
         (Game.shimmerTypes.golden.maxTime - Game.shimmerTypes.golden.time) / Game.fps,
-      );
+      )} ${chanceToSpawn < 0.01 ? '<' : ''}${chanceToSpawn.toLocaleString('en', {
+        style: 'percent',
+      })}`;
       numberOfTimers += 1;
     } else l('CMTimerBarGC').style.display = 'none';
 
@@ -128,7 +140,7 @@ export function UpdateTimerBar() {
           maxWidthTwoBar) /
           Game.shimmerTypes.reindeer.maxTime,
       )}px`;
-      if (CMOptions.TimerBarOverlay >= 1)
+      if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay >= 1)
         l('CMTimerBarRenMinBar').textContent = Math.ceil(
           (Game.shimmerTypes.reindeer.minTime - Game.shimmerTypes.reindeer.time) / Game.fps,
         );
@@ -141,7 +153,7 @@ export function UpdateTimerBar() {
           maxWidthTwoBar) /
           Game.shimmerTypes.reindeer.maxTime,
       )}px`;
-      if (CMOptions.TimerBarOverlay >= 1)
+      if (Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay >= 1)
         l('CMTimerBarRenBar').textContent = Math.ceil(
           Math.min(
             Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.minTime,
@@ -149,9 +161,17 @@ export function UpdateTimerBar() {
           ) / Game.fps,
         );
       else l('CMTimerBarRenBar').textContent = '';
-      l('CMTimerBarRenTime').textContent = Math.ceil(
+      const chanceToSpawn =
+        Math.max(
+          0,
+          (Game.shimmerTypes.reindeer.time - Game.shimmerTypes.reindeer.minTime) /
+            (Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.minTime),
+        ) ** 5;
+      l('CMTimerBarRenTime').textContent = `${Math.ceil(
         (Game.shimmerTypes.reindeer.maxTime - Game.shimmerTypes.reindeer.time) / Game.fps,
-      );
+      )} ${chanceToSpawn < 0.01 ? '<' : ''}${chanceToSpawn.toLocaleString('en', {
+        style: 'percent',
+      })}`;
       numberOfTimers += 1;
     } else {
       l('CMTimerBarRen').style.display = 'none';
@@ -167,13 +187,15 @@ export function UpdateTimerBar() {
         ]);
         timer.style.display = '';
         let classColour = '';
-        // Gives specific timers specific colors
+        // Gives specific timers specific colours
         if (typeof BuffColours[Game.buffs[i].name] !== 'undefined') {
           classColour = BuffColours[Game.buffs[i].name];
         } else classColour = ColourPurple;
         timer.lastChild.children[1].className = ColourBackPre + classColour;
         timer.lastChild.children[1].style.color = 'black';
-        if (CMOptions.TimerBarOverlay === 2)
+        if (
+          Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.TimerBarOverlay === 2
+        )
           timer.lastChild.children[1].textContent = `${Math.round(
             100 * (Game.buffs[i].time / Game.buffs[i].maxTime),
           )}%`;
