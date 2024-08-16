@@ -21,12 +21,12 @@ function ReplaceNativeGrimoireDraw() {
       if (
         Game.mods.cookieMonsterFramework.saveData.cookieMonsterMod.settings.GrimoireBar === 1 &&
         minigame.magic < minigame.magicM &&
-        (typeof Steam === 'undefined' || Game.drawT % 5 === 0)
+        Game.drawT % 5 === 0
       ) {
         minigame.magicBarTextL.innerHTML += ` (${FormatTime(
           CalculateGrimoireRefillTime(minigame.magic, minigame.magicM, minigame.magicM),
         )})`;
-        minigame.magicBarL.style.width = "75%" // TODO: Fix this after Orteil pushes fix to main game;
+        minigame.magicBarL.style.width = '75%'; // TODO: Fix this after Orteil pushes fix to main game;
       }
     };
     HasReplaceNativeGrimoireDraw = true;

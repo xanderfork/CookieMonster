@@ -1,7 +1,7 @@
 /** Functions related to the Bottom Bar */
 
 import { CacheObjects1, CacheObjects10, CacheObjects100 } from '../../Cache/VariablesAndData';
-import { VersionMajor, VersionMinor } from '../../Data/Moddata.ts';
+import { VersionMajor, VersionMinor } from '../../Data/Moddata';
 import Beautify from '../BeautifyAndFormatting/Beautify';
 import FormatTime from '../BeautifyAndFormatting/FormatTime';
 import GetTimeColour from '../BeautifyAndFormatting/GetTimeColour';
@@ -98,9 +98,8 @@ export function UpdateBotBar() {
       l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[count].className =
         ColourTextPre + timeColour.colour;
       if (timeColour.text === 'Done!' && Game.cookies < Game.Objects[i].bulkPrice) {
-        l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[
-          count
-        ].textContent = `${timeColour.text} (with Wrink)`;
+        l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[count].textContent =
+          `${timeColour.text} (with Wrink)`;
       } else
         l('CMBotBar').firstChild.firstChild.childNodes[3].childNodes[count].textContent =
           timeColour.text;
