@@ -3,6 +3,7 @@ import { TooltipName, TooltipType } from '../VariablesAndData';
 import * as Create from './CreateTooltip';
 import Building from './TypesOfTooltips/Building';
 import GardenPlots from './TypesOfTooltips/GardenPlots';
+import StockMarket from './TypesOfTooltips/StockMarket';
 import Grimoire from './TypesOfTooltips/Grimoire';
 import HarvestAll from './TypesOfTooltips/HarvestAll';
 import PantheonGods from './TypesOfTooltips/PantheonGods';
@@ -33,6 +34,8 @@ export default function UpdateTooltips() {
       GardenPlots();
     } else if (TooltipType === 'ha') {
       HarvestAll();
+    } else if (TooltipType === 'sm') {
+      StockMarket();
     } else if (TooltipType === 'wb') {
       WrinklerButton();
     } else if (TooltipType === 'pag' || (TooltipType === 'pas' && TooltipName[1] !== -1)) {
