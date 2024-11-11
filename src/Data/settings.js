@@ -549,6 +549,14 @@ const settings = {
     'Shows a tooltip for plants that have a cookie reward.',
     true,
   ),
+  TooltipStocks: new settingClasses.SettingStandard(
+    1,
+    'bool',
+    'Tooltip',
+    ['Stock market tooltips OFF', 'Stock market tooltips ON'],
+    'Shows additional info in the stock market tooltips.',
+    true,
+  ),
   TooltipPantheon: new settingClasses.SettingStandard(
     1,
     'bool',
